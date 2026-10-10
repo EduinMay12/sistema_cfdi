@@ -1,0 +1,3392 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
+:root {
+    --sidebar-width: 255px;
+    --app-bg: #f4f7fb;
+    --sidebar-bg: #101827;
+    --sidebar-text: #94a3b8;
+    --sidebar-active: #2563eb;
+}
+
+[data-bs-theme="dark"] {
+    --app-bg: #0b1220;
+    --sidebar-bg: #080f1d;
+    --sidebar-text: #94a3b8;
+    --sidebar-active: #2563eb;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--app-bg);
+    color: var(--bs-body-color);
+    transition: background-color .25s ease, color .25s ease;
+}
+
+.admin-main {
+    background: var(--app-bg);
+    min-height: 100vh;
+}
+
+.admin-navbar,
+.stat-card,
+.content-card {
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+.dropdown-menu {
+    z-index: 1100;
+}
+
+[data-bs-theme="dark"] body {
+    --app-bg: #0b1220;
+    background: var(--app-bg);
+}
+
+/* Sidebar */
+
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    color: #fff;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    transition: transform .25s ease;
+}
+
+.sidebar-brand {
+    padding: 25px 22px;
+    font-size: 21px;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.sidebar-brand i {
+    color: #60a5fa;
+    margin-right: 8px;
+}
+
+.sidebar-menu {
+    padding: 20px 12px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 16px;
+    margin-bottom: 5px;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: .2s;
+}
+
+.sidebar-link:hover {
+    background: rgba(255,255,255,.07);
+    color: #fff;
+}
+
+.sidebar-link.active {
+    background: var(--sidebar-active);
+    color: #fff;
+}
+
+.sidebar-link i {
+    font-size: 19px;
+}
+
+/* Layout */
+
+.admin-main {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+}
+
+.admin-navbar {
+    height: 76px;
+    padding: 0 30px;
+    background: var(--bs-body-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-content {
+    padding: 30px;
+}
+
+/* Cards */
+
+.stat-card {
+    border: 1px solid var(--bs-border-color);
+    border-radius: 16px;
+    background: var(--bs-body-bg);
+    padding: 24px;
+    height: 100%;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.06);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    background: rgba(37,99,235,.12);
+    color: #3b82f6;
+}
+
+.stat-number {
+    font-size: 30px;
+    font-weight: 750;
+    margin-top: 16px;
+}
+
+.stat-label {
+    color: var(--bs-secondary-color);
+    font-size: 14px;
+}
+
+/* Tablas */
+
+.content-card {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.table > :not(caption) > * > * {
+    padding: 14px;
+}
+
+/* Overlay */
+
+.sidebar-overlay {
+    display: none;
+}
+
+/* Móvil */
+
+@media (max-width: 991px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .admin-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.55);
+        z-index: 1040;
+    }
+
+    .admin-main {
+        margin-left: 0;
+    }
+
+    .admin-navbar {
+        padding: 0 16px;
+    }
+
+    .admin-content {
+        padding: 18px;
+    }
+}
+
+/* ==========================================
+   CFDI MANAGER - EXECUTIVE DASHBOARD
+========================================== */
+
+.executive-dashboard .executive-kpi {
+    transition: transform .2s ease, box-shadow .2s ease;
+    border: 1px solid rgba(128, 145, 170, .13);
+}
+
+.executive-dashboard .executive-kpi:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
+}
+
+.executive-dashboard .kpi-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(110, 130, 160, .09);
+    font-size: 1.3rem;
+}
+
+/* ==========================================
+   LOADER EJECUTIVO CONTABLE
+========================================== */
+
+#executiveLoader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0b1628;
+    color: #f8fafc;
+    transition: opacity .4s ease, visibility .4s ease;
+}
+
+#executiveLoader.loader-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.executive-loader-content {
+    width: min(360px, 90vw);
+    text-align: center;
+}
+
+.executive-loader-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.executive-loader-brand i {
+    color: #60a5fa;
+}
+
+.executive-loader-subtitle {
+    color: #94a3b8;
+    font-size: .7rem;
+    letter-spacing: 3px;
+    margin-top: 6px;
+}
+
+.executive-loader-document {
+    width: 100px;
+    height: 125px;
+    margin: 38px auto 25px;
+    border: 1px solid #365779;
+    background: #172b46;
+    border-radius: 12px;
+    padding: 18px 15px;
+    position: relative;
+    animation: executiveFloat 2.4s ease-in-out infinite;
+}
+
+.executive-loader-line {
+    height: 5px;
+    background: #44668c;
+    border-radius: 5px;
+    margin-bottom: 9px;
+}
+
+.executive-loader-line.short {
+    width: 65%;
+}
+
+.executive-loader-chart {
+    display: flex;
+    height: 42px;
+    align-items: end;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 15px;
+}
+
+.executive-loader-chart span {
+    width: 11px;
+    border-radius: 3px 3px 0 0;
+    background: #38bdf8;
+    animation: executiveBars 1.2s ease-in-out infinite alternate;
+}
+
+.executive-loader-chart span:nth-child(1) {
+    height: 35%;
+}
+
+.executive-loader-chart span:nth-child(2) {
+    height: 70%;
+    animation-delay: .2s;
+}
+
+.executive-loader-chart span:nth-child(3) {
+    height: 100%;
+    background: #34d399;
+    animation-delay: .4s;
+}
+
+.executive-loader-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 7px;
+}
+
+.executive-loader-message {
+    font-size: .82rem;
+    color: #94a3b8;
+}
+
+.executive-loader-progress {
+    width: 190px;
+    height: 4px;
+    border-radius: 20px;
+    background: #253c59;
+    margin: 25px auto 0;
+    overflow: hidden;
+}
+
+.executive-loader-progress::before {
+    content: "";
+    display: block;
+    width: 40%;
+    height: 100%;
+    background: #34d399;
+    border-radius: inherit;
+    animation: executiveProgress 1.4s ease-in-out infinite;
+}
+
+@keyframes executiveFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+}
+
+@keyframes executiveBars {
+    to { height: 25%; }
+}
+
+@keyframes executiveProgress {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(350%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .executive-loader-document,
+    .executive-loader-chart span,
+    .executive-loader-progress::before {
+        animation: none;
+    }
+}
+
+/* ============================================
+   CFDI MANAGER — EXECUTIVE AUTH
+============================================ */
+
+.auth-executive-body {
+    margin: 0;
+    min-height: 100vh;
+    background: #f5f7fb;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+.auth-executive-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+/* PANEL CORPORATIVO */
+
+.auth-brand-panel {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(37, 99, 235, .2),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(20, 184, 166, .12),
+            transparent 35%
+        ),
+        linear-gradient(145deg, #081629, #102844);
+    color: #fff;
+}
+
+.auth-brand-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 44px 44px;
+    pointer-events: none;
+}
+
+.auth-brand-content {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    max-width: 700px;
+    margin: auto;
+    padding: 44px clamp(28px, 5vw, 90px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 45px;
+}
+
+.auth-brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.auth-brand-logo:hover {
+    color: #fff;
+}
+
+.auth-brand-logo-icon {
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    background: rgba(52, 211, 153, .12);
+    color: #5eead4;
+    font-size: 1.45rem;
+    border: 1px solid rgba(94, 234, 212, .2);
+}
+
+.auth-brand-logo strong {
+    display: block;
+    font-size: 1.15rem;
+    letter-spacing: -.5px;
+}
+
+.auth-brand-logo small {
+    display: block;
+    color: #94a3b8;
+    letter-spacing: 2px;
+    font-size: .62rem;
+}
+
+.auth-brand-eyebrow {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #5eead4;
+    margin-bottom: 20px;
+}
+
+.auth-brand-main h1 {
+    font-size: clamp(2.4rem, 4vw, 4.5rem);
+    line-height: 1.08;
+    letter-spacing: -2px;
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+.auth-brand-main h1 span {
+    display: block;
+    color: #5eead4;
+}
+
+.auth-brand-main > p {
+    color: #b5c4d7;
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 500px;
+}
+
+.auth-feature-list {
+    display: grid;
+    gap: 13px;
+    margin-top: 28px;
+    color: #d8e3ef;
+    font-size: .88rem;
+}
+
+.auth-feature-list > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.auth-feature-list i {
+    color: #5eead4;
+}
+
+.auth-brand-preview {
+    margin-top: 36px;
+    padding: 22px;
+    background: rgba(255, 255, 255, .045);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 18px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 50px rgba(0,0,0,.12);
+}
+
+.auth-preview-heading {
+    display: flex;
+    justify-content: space-between;
+    color: #cbd5e1;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.auth-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.auth-preview-stat {
+    padding: 13px;
+    border-radius: 11px;
+    background: rgba(255,255,255,.055);
+}
+
+.auth-preview-stat small {
+    display: block;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    font-size: .7rem;
+}
+
+.auth-preview-stat strong {
+    font-size: .9rem;
+}
+
+.auth-preview-stat strong i {
+    color: #5eead4;
+    margin-right: 5px;
+}
+
+.auth-preview-bars {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+    height: 90px;
+    margin-top: 20px;
+}
+
+.auth-preview-bars span {
+    flex: 1;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(180deg, #5eead4, #0f766e);
+}
+
+.auth-preview-bars span:nth-child(1) { height: 35%; }
+.auth-preview-bars span:nth-child(2) { height: 55%; }
+.auth-preview-bars span:nth-child(3) { height: 45%; }
+.auth-preview-bars span:nth-child(4) { height: 80%; }
+.auth-preview-bars span:nth-child(5) { height: 65%; }
+.auth-preview-bars span:nth-child(6) { height: 95%; }
+.auth-preview-bars span:nth-child(7) { height: 75%; }
+.auth-preview-bars span:nth-child(8) { height: 100%; }
+
+.auth-brand-footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: .73rem;
+    color: #8295ad;
+}
+
+/* PANEL FORMULARIO */
+
+.auth-form-panel {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 45px 28px;
+    background: #f8fafc;
+}
+
+.auth-form-container {
+    width: 100%;
+    max-width: 440px;
+}
+
+.auth-mobile-brand {
+    display: none;
+}
+
+.auth-heading {
+    margin-bottom: 34px;
+}
+
+.auth-heading-tag {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 8px;
+    background: #e7f3f2;
+    color: #0f766e;
+    font-size: .68rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.auth-heading h2 {
+    color: #10243b;
+    font-size: clamp(1.8rem, 3vw, 2.3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+}
+
+.auth-heading p {
+    color: #64748b;
+    line-height: 1.7;
+    font-size: .93rem;
+}
+
+.auth-label {
+    display: block;
+    color: #334155;
+    font-size: .83rem;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+.auth-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-input-group > i {
+    position: absolute;
+    left: 16px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+.auth-input {
+    width: 100%;
+    height: 52px;
+    padding: 0 46px;
+    border: 1px solid #dce4ed;
+    border-radius: 12px;
+    background: #fff;
+    color: #0f172a;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.auth-input::placeholder {
+    color: #a0aebe;
+}
+
+.auth-input:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, .09);
+}
+
+.auth-input.is-invalid {
+    border-color: #dc3545;
+}
+
+.auth-password-toggle {
+    position: absolute;
+    right: 12px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.auth-password-toggle:hover {
+    color: #0f766e;
+}
+
+.auth-small-link {
+    color: #0f766e;
+    text-decoration: none;
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.auth-small-link:hover {
+    text-decoration: underline;
+}
+
+.auth-error {
+    color: #dc3545;
+    font-size: .78rem;
+    margin-top: 7px;
+}
+
+.auth-remember-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 26px;
+}
+
+.auth-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #64748b;
+    font-size: .82rem;
+    cursor: pointer;
+}
+
+.auth-checkbox-label input {
+    accent-color: #0f766e;
+    width: 16px;
+    height: 16px;
+}
+
+.auth-submit-button {
+    width: 100%;
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(110deg, #0f766e, #115e59);
+    color: #fff;
+    font-size: .94rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.auth-submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(15, 118, 110, .2);
+}
+
+.auth-submit-button:focus-visible,
+.auth-password-toggle:focus-visible {
+    outline: 3px solid #38bdf8;
+    outline-offset: 3px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 28px;
+    color: #64748b;
+    font-size: .85rem;
+}
+
+.auth-switch a {
+    color: #0f766e;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.auth-security-note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 13px;
+    border-radius: 10px;
+    background: #edf7f5;
+    color: #42645e;
+    font-size: .78rem;
+    line-height: 1.5;
+    margin: 20px 0;
+}
+
+.auth-security-note i {
+    color: #0f766e;
+    font-size: 1.1rem;
+}
+
+.auth-form-footer {
+    margin-top: 45px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: .75rem;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 991px) {
+    .auth-executive-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-brand-panel {
+        display: none;
+    }
+
+    .auth-form-panel {
+        min-height: 100vh;
+    }
+
+    .auth-mobile-brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 40px;
+        color: #0f766e;
+        font-size: 1.3rem;
+        font-weight: 800;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-form-panel {
+        padding: 32px 20px;
+    }
+
+    .auth-heading h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-submit-button {
+        transition: none;
+    }
+
+    .auth-submit-button:hover {
+        transform: none;
+    }
+}
+
+/* =============================================
+   CFDI MANAGER — EXECUTIVE FINANCIAL THEME
+============================================= */
+
+:root {
+    --exec-navy: #0b1628;
+    --exec-navy-soft: #142b43;
+    --exec-emerald: #0f766e;
+    --exec-emerald-light: #5eead4;
+    --exec-background: #f5f7fb;
+    --exec-surface: #ffffff;
+    --exec-text: #10243b;
+    --exec-muted: #64748b;
+    --exec-border: #e3eaf1;
+    --exec-radius: 16px;
+    --exec-shadow: 0 8px 28px rgba(15, 23, 42, .045);
+}
+
+.executive-admin-body {
+    background: var(--exec-background);
+    color: var(--exec-text);
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+/* SIDEBAR */
+
+.executive-sidebar {
+    background: linear-gradient(180deg, #0b1628, #102943);
+    color: #e2e8f0;
+    border-right: 1px solid rgba(255, 255, 255, .07);
+}
+
+.executive-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 18px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.executive-brand:hover {
+    color: #fff;
+}
+
+.executive-brand-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(94, 234, 212, .12);
+    color: #5eead4;
+    font-size: 1.35rem;
+}
+
+.executive-brand-text strong {
+    display: block;
+    font-size: 1.05rem;
+    letter-spacing: -.3px;
+}
+
+.executive-brand-text small {
+    display: block;
+    color: #94a3b8;
+    font-size: .6rem;
+    letter-spacing: 2px;
+}
+
+.executive-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 16px;
+    margin: 4px 12px;
+    color: #b9c9dc;
+    text-decoration: none;
+    border-radius: 11px;
+    font-size: .87rem;
+    font-weight: 500;
+    transition: background .2s, color .2s;
+}
+
+.executive-nav-link i {
+    font-size: 1.15rem;
+    width: 22px;
+    text-align: center;
+}
+
+.executive-nav-link:hover {
+    background: rgba(255, 255, 255, .07);
+    color: #fff;
+}
+
+.executive-nav-link.active {
+    background: rgba(94, 234, 212, .12);
+    color: #5eead4;
+    font-weight: 600;
+}
+
+/* TOPBAR */
+
+.executive-topbar {
+    background: var(--exec-surface);
+    border-bottom: 1px solid var(--exec-border);
+    box-shadow: 0 2px 12px rgba(15, 23, 42, .025);
+}
+
+.executive-main {
+    min-width: 0;
+    background: var(--exec-background);
+}
+
+/* CARDS */
+
+.executive-admin-body .content-card {
+    background: var(--exec-surface);
+    border: 1px solid var(--exec-border);
+    border-radius: var(--exec-radius);
+    box-shadow: var(--exec-shadow);
+    padding: 24px;
+}
+
+.executive-admin-body .content-card h5 {
+    color: var(--exec-text);
+}
+
+/* BOTONES */
+
+.executive-admin-body .btn-primary {
+    --bs-btn-bg: #0f766e;
+    --bs-btn-border-color: #0f766e;
+    --bs-btn-hover-bg: #115e59;
+    --bs-btn-hover-border-color: #115e59;
+    --bs-btn-active-bg: #134e4a;
+    --bs-btn-active-border-color: #134e4a;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.executive-admin-body .btn-outline-primary {
+    --bs-btn-color: #0f766e;
+    --bs-btn-border-color: #0f766e;
+    --bs-btn-hover-bg: #0f766e;
+    --bs-btn-hover-border-color: #0f766e;
+    border-radius: 10px;
+}
+
+/* FORMULARIOS */
+
+.executive-admin-body .form-control,
+.executive-admin-body .form-select {
+    border-radius: 10px;
+    border: 1px solid var(--exec-border);
+    padding: 10px 13px;
+    background-color: var(--exec-surface);
+    color: var(--exec-text);
+}
+
+.executive-admin-body .form-control:focus,
+.executive-admin-body .form-select:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, .1);
+}
+
+.executive-admin-body .form-label {
+    color: var(--exec-text);
+    font-size: .84rem;
+    font-weight: 600;
+}
+
+/* TABLAS */
+
+.executive-admin-body .table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--exec-text);
+    --bs-table-border-color: var(--exec-border);
+}
+
+.executive-admin-body .table thead th {
+    background: rgba(148, 163, 184, .07);
+    color: var(--exec-muted);
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    font-weight: 700;
+    padding: 15px 12px;
+}
+
+.executive-admin-body .table tbody td {
+    padding: 15px 12px;
+    font-size: .85rem;
+    vertical-align: middle;
+}
+
+.executive-admin-body .table-hover tbody tr:hover {
+    background: rgba(15, 118, 110, .035);
+}
+
+/* BADGES */
+
+.executive-admin-body .badge {
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-weight: 600;
+}
+
+/* DATATABLES */
+
+.executive-admin-body .dt-container .dt-search input,
+.executive-admin-body .dataTables_filter input {
+    border: 1px solid var(--exec-border);
+    border-radius: 10px;
+    padding: 8px 12px;
+    outline: none;
+    background: var(--exec-surface);
+    color: var(--exec-text);
+}
+
+.executive-admin-body .dt-container .dt-length select,
+.executive-admin-body .dataTables_length select {
+    border: 1px solid var(--exec-border);
+    border-radius: 9px;
+    padding: 6px;
+    background: var(--exec-surface);
+    color: var(--exec-text);
+}
+
+/* MODALES */
+
+.executive-admin-body .modal-content {
+    background: var(--exec-surface);
+    color: var(--exec-text);
+    border: 1px solid var(--exec-border);
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, .16);
+}
+
+.executive-admin-body .modal-header,
+.executive-admin-body .modal-footer {
+    border-color: var(--exec-border);
+}
+
+/* DARK MODE: aplicar data-bs-theme="dark" al html */
+
+html[data-bs-theme="dark"] {
+    --exec-background: #0b1422;
+    --exec-surface: #142237;
+    --exec-text: #e5edf6;
+    --exec-muted: #a0aec0;
+    --exec-border: #283a51;
+    --exec-shadow: 0 8px 28px rgba(0, 0, 0, .14);
+}
+
+html[data-bs-theme="dark"] .executive-admin-body .table thead th {
+    background: rgba(255, 255, 255, .035);
+}
+
+html[data-bs-theme="dark"] .executive-admin-body .table-hover tbody tr:hover {
+    background: rgba(94, 234, 212, .045);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    .executive-admin-body .content-card {
+        padding: 16px;
+        border-radius: 13px;
+    }
+
+    .executive-admin-body .table tbody td {
+        padding: 11px 9px;
+    }
+}
+
+/* ============================================
+   CFDI MANAGER — PREMIUM EXECUTIVE DASHBOARD
+============================================ */
+
+.premium-dashboard {
+    --premium-primary: #0f766e;
+    --premium-accent: #5eead4;
+}
+
+.premium-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.premium-eyebrow {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--premium-primary);
+    margin-bottom: 12px;
+}
+
+.premium-page-title {
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -.8px;
+    margin-bottom: 8px;
+}
+
+.premium-header-icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    background: rgba(15,118,110,.1);
+    color: var(--premium-primary);
+    border-radius: 16px;
+    font-size: 1.65rem;
+}
+
+.premium-filter-card {
+    padding: 20px 24px !important;
+}
+
+.premium-filter-button {
+    min-height: 45px;
+}
+
+.premium-kpi {
+    position: relative;
+    overflow: hidden;
+    min-height: 178px;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.premium-kpi:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 35px rgba(15,23,42,.09);
+}
+
+.premium-kpi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--kpi-accent);
+}
+
+.premium-kpi-emerald {
+    --kpi-accent: #0f766e;
+    --kpi-background: rgba(15,118,110,.1);
+}
+
+.premium-kpi-blue {
+    --kpi-accent: #2563eb;
+    --kpi-background: rgba(37,99,235,.1);
+}
+
+.premium-kpi-amber {
+    --kpi-accent: #d97706;
+    --kpi-background: rgba(217,119,6,.1);
+}
+
+.premium-kpi-label {
+    color: var(--exec-muted, #64748b);
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+.premium-kpi-icon {
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--kpi-background);
+    color: var(--kpi-accent);
+    font-size: 1.3rem;
+}
+
+.premium-kpi-value {
+    font-size: clamp(1.45rem, 2vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -.7px;
+    margin-top: 20px;
+    font-variant-numeric: tabular-nums;
+}
+
+.premium-kpi-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+    color: var(--exec-muted, #64748b);
+    font-size: .72rem;
+}
+
+.premium-panel {
+    padding: 25px !important;
+}
+
+.premium-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.premium-section-label {
+    display: block;
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    color: var(--premium-primary);
+    margin-bottom: 10px;
+}
+
+.premium-panel-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(15,118,110,.09);
+    color: var(--premium-primary);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.premium-chart-container {
+    height: 320px;
+    margin-top: 24px;
+    position: relative;
+}
+
+.premium-balance-amount {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+    margin: 20px 0;
+}
+
+.premium-balance-divider {
+    height: 1px;
+    background: var(--exec-border, #e3eaf1);
+    margin: 24px 0;
+}
+
+.premium-balance-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: .88rem;
+}
+
+.premium-balance-row span {
+    color: var(--exec-muted, #64748b);
+}
+
+.premium-accounting-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    margin-top: 20px;
+    border-radius: 11px;
+    background: rgba(15,118,110,.07);
+    color: var(--exec-muted, #64748b);
+    font-size: .76rem;
+    line-height: 1.6;
+}
+
+.premium-accounting-note i {
+    color: var(--premium-primary);
+    font-size: 1rem;
+}
+
+.premium-table thead th {
+    white-space: nowrap;
+}
+
+.premium-type-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 10px;
+    background: rgba(148,163,184,.1);
+    border-radius: 8px;
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.premium-empty-state {
+    max-width: 340px;
+    margin: auto;
+    text-align: center;
+}
+
+.premium-empty-state > i {
+    display: block;
+    font-size: 2.5rem;
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.premium-empty-state h6 {
+    font-weight: 700;
+}
+
+.premium-empty-state p {
+    color: var(--exec-muted, #64748b);
+    font-size: .84rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+    .premium-page-header {
+        align-items: flex-start;
+    }
+
+    .premium-header-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.25rem;
+    }
+
+    .premium-filter-card,
+    .premium-panel {
+        padding: 17px !important;
+    }
+
+    .premium-chart-container {
+        height: 260px;
+    }
+
+    .premium-kpi {
+        min-height: 160px;
+    }
+
+    .premium-panel-header {
+        flex-wrap: wrap;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .premium-kpi {
+        transition: none;
+    }
+
+    .premium-kpi:hover {
+        transform: none;
+    }
+}
+
+/* ==========================================
+   CFDI MANAGER — EXECUTIVE ADMIN LAYOUT
+========================================== */
+
+.executive-admin-body {
+    background: var(--exec-background, #f5f7fb);
+    color: var(--exec-text, #10243b);
+    min-height: 100vh;
+}
+
+.executive-main {
+    min-width: 0;
+    min-height: 100vh;
+    background: var(--exec-background, #f5f7fb);
+}
+
+/* NAVBAR */
+
+.executive-topbar {
+    background: var(--exec-surface, #fff);
+    border-bottom: 1px solid var(--exec-border, #e3eaf1);
+    padding: 17px 28px;
+    min-height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.executive-topbar-eyebrow {
+    font-size: .64rem;
+    letter-spacing: 1.3px;
+    font-weight: 700;
+    color: #0f766e;
+    margin-bottom: 5px;
+}
+
+.executive-topbar-heading h5 {
+    font-size: 1.1rem;
+    color: var(--exec-text, #10243b);
+    letter-spacing: -.3px;
+}
+
+/* ICON BUTTONS */
+
+.executive-icon-button {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--exec-border, #e3eaf1);
+    border-radius: 11px;
+    color: var(--exec-text, #10243b);
+    background: var(--exec-surface, #fff);
+    transition: background .2s, border-color .2s;
+}
+
+.executive-icon-button:hover {
+    background: rgba(15, 118, 110, .08);
+    border-color: rgba(15, 118, 110, .2);
+    color: #0f766e;
+}
+
+/* SYSTEM STATUS */
+
+.executive-system-status {
+    align-items: center;
+    gap: 9px;
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--exec-muted, #64748b);
+    padding: 9px 12px;
+    border: 1px solid var(--exec-border, #e3eaf1);
+    border-radius: 30px;
+}
+
+.executive-status-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, .12);
+}
+
+/* PROFILE */
+
+.executive-profile-button {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    border: 1px solid var(--exec-border, #e3eaf1);
+    border-radius: 12px;
+    background: var(--exec-surface, #fff);
+    padding: 6px 12px 6px 6px;
+    color: var(--exec-text, #10243b);
+    cursor: pointer;
+}
+
+.executive-profile-button::after {
+    display: none;
+}
+
+.executive-avatar {
+    display: grid;
+    place-items: center;
+    width: 39px;
+    height: 39px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0f766e, #115e59);
+    color: white;
+    font-weight: 800;
+}
+
+.executive-profile-info {
+    flex-direction: column;
+    text-align: left;
+    line-height: 1.35;
+}
+
+.executive-profile-info strong {
+    font-size: .8rem;
+    max-width: 145px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.executive-profile-info small {
+    color: var(--exec-muted, #64748b);
+    font-size: .68rem;
+}
+
+.executive-profile-chevron {
+    font-size: .7rem;
+    color: var(--exec-muted, #64748b);
+}
+
+.executive-profile-menu {
+    min-width: 245px;
+    border: 1px solid var(--exec-border, #e3eaf1);
+    border-radius: 13px;
+    padding: 8px;
+    box-shadow: 0 15px 40px rgba(15, 23, 42, .12);
+}
+
+.executive-profile-menu .dropdown-item {
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: .85rem;
+}
+
+/* CONTENT */
+
+.executive-content {
+    padding-bottom: 20px;
+}
+
+.executive-footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 35px;
+    padding: 22px 0 5px;
+    border-top: 1px solid var(--exec-border, #e3eaf1);
+    color: var(--exec-muted, #64748b);
+    font-size: .73rem;
+}
+
+/* DARK MODE */
+
+html[data-bs-theme="dark"] .executive-topbar,
+html[data-bs-theme="dark"] .executive-profile-button,
+html[data-bs-theme="dark"] .executive-icon-button {
+    background: var(--exec-surface, #142237);
+    color: var(--exec-text, #e5edf6);
+}
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+    .executive-topbar {
+        padding: 12px 15px;
+        min-height: 70px;
+    }
+
+    .executive-topbar-heading h5 {
+        font-size: .92rem;
+    }
+
+    .executive-topbar-eyebrow {
+        font-size: .53rem;
+        letter-spacing: .7px;
+    }
+
+    .executive-profile-button {
+        padding: 5px;
+    }
+
+    .executive-avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .executive-profile-chevron {
+        display: none;
+    }
+}
+
+/* =============================================
+   CFDI MANAGER — EXECUTIVE SIDEBAR
+============================================= */
+
+.executive-sidebar {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(
+        180deg,
+        #0b1628 0%,
+        #10253e 65%,
+        #0b192d 100%
+    );
+    color: #e2e8f0;
+    border-right: 1px solid rgba(255,255,255,.07);
+}
+
+/* HEADER */
+
+.executive-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 18px 22px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    flex-shrink: 0;
+}
+
+.executive-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    text-decoration: none;
+    min-width: 0;
+}
+
+.executive-sidebar-brand:hover {
+    color: #fff;
+}
+
+.executive-sidebar-logo {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    background: rgba(94,234,212,.12);
+    color: #5eead4;
+    font-size: 1.4rem;
+    border: 1px solid rgba(94,234,212,.15);
+}
+
+.executive-sidebar-brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.executive-sidebar-brand-text strong {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -.4px;
+    white-space: nowrap;
+}
+
+.executive-sidebar-brand-text small {
+    color: #94a3b8;
+    font-size: .6rem;
+    letter-spacing: 1.8px;
+    font-weight: 700;
+}
+
+.executive-sidebar-close {
+    display: grid;
+    place-items: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    background: rgba(255,255,255,.05);
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+/* BODY */
+
+.executive-sidebar-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #334155 transparent;
+}
+
+.executive-sidebar-section {
+    margin-bottom: 26px;
+}
+
+.executive-sidebar-label {
+    display: block;
+    padding: 0 17px;
+    margin-bottom: 12px;
+    color: #7489a3;
+    font-size: .64rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.executive-sidebar .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* LINKS */
+
+.executive-sidebar .executive-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 15px;
+    margin: 0 5px;
+    border-radius: 11px;
+    color: #b9c9dc;
+    text-decoration: none;
+    font-size: .86rem;
+    font-weight: 500;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.executive-sidebar .executive-sidebar-link i {
+    width: 23px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 1.12rem;
+}
+
+.executive-sidebar .executive-sidebar-link span {
+    min-width: 0;
+}
+
+.executive-sidebar .executive-sidebar-link:hover {
+    background: rgba(255,255,255,.07);
+    color: #fff;
+    transform: translateX(2px);
+}
+
+.executive-sidebar .executive-sidebar-link.active {
+    background: rgba(94,234,212,.12);
+    color: #5eead4;
+    font-weight: 700;
+    box-shadow: inset 3px 0 0 #5eead4;
+}
+
+/* SHORTCUT */
+
+.executive-sidebar-shortcut {
+    margin: 15px 7px 10px;
+    padding: 18px;
+    border: 1px solid rgba(94,234,212,.13);
+    border-radius: 15px;
+    background: linear-gradient(
+        135deg,
+        rgba(15,118,110,.18),
+        rgba(15,118,110,.045)
+    );
+}
+
+.executive-sidebar-shortcut-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(94,234,212,.12);
+    color: #5eead4;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.executive-sidebar-shortcut strong {
+    display: block;
+    color: #e2e8f0;
+    font-size: .82rem;
+    margin-bottom: 8px;
+}
+
+.executive-sidebar-shortcut p {
+    color: #94a3b8;
+    font-size: .74rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.executive-sidebar-shortcut a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #5eead4;
+    font-size: .76rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.executive-sidebar-shortcut a:hover {
+    color: #99f6e4;
+}
+
+/* FOOTER */
+
+.executive-sidebar-footer {
+    flex-shrink: 0;
+    padding: 15px 12px;
+    border-top: 1px solid rgba(255,255,255,.07);
+}
+
+.executive-sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #e2e8f0;
+    background: rgba(255,255,255,.045);
+}
+
+.executive-sidebar-user:hover {
+    color: #fff;
+    background: rgba(255,255,255,.08);
+}
+
+.executive-sidebar-avatar {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #0f766e, #115e59);
+    color: #fff;
+    font-weight: 800;
+}
+
+.executive-sidebar-user-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    gap: 3px;
+}
+
+.executive-sidebar-user-info strong,
+.executive-sidebar-user-info small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.executive-sidebar-user-info strong {
+    font-size: .78rem;
+}
+
+.executive-sidebar-user-info small {
+    color: #94a3b8;
+    font-size: .66rem;
+}
+
+.executive-sidebar-user > i {
+    color: #94a3b8;
+    font-size: .95rem;
+}
+
+.executive-sidebar-copyright {
+    margin-top: 14px;
+    text-align: center;
+    color: #71849b;
+    font-size: .65rem;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 991.98px) {
+    .executive-sidebar-header {
+        padding: 19px 15px;
+    }
+
+    .executive-sidebar-body {
+        padding-top: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .executive-sidebar .executive-sidebar-link {
+        transition: none;
+    }
+
+    .executive-sidebar .executive-sidebar-link:hover {
+        transform: none;
+    }
+}
+
+/* ============================================
+   CFDI MANAGER — EXECUTIVE CONTRIBUTORS
+============================================ */
+
+.contributor-new-button {
+    padding: 11px 18px;
+    font-size: .86rem;
+    box-shadow: 0 7px 20px rgba(15, 118, 110, .12);
+}
+
+.contributor-stat {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px !important;
+}
+
+.contributor-stat-icon {
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.contributor-stat-blue {
+    background: rgba(37, 99, 235, .1);
+    color: #2563eb;
+}
+
+.contributor-stat-green {
+    background: rgba(15, 118, 110, .1);
+    color: #0f766e;
+}
+
+.contributor-stat-amber {
+    background: rgba(217, 119, 6, .1);
+    color: #d97706;
+}
+
+.contributor-counter {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 13px;
+    background: rgba(15, 118, 110, .08);
+    border-radius: 9px;
+    color: #0f766e;
+    font-size: .76rem;
+    font-weight: 700;
+}
+
+.contributor-table-card {
+    padding: 25px !important;
+}
+
+.contributor-rfc {
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(148, 163, 184, .1);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+
+.contributor-table-avatar {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: rgba(15, 118, 110, .1);
+    color: #0f766e;
+    font-weight: 800;
+}
+
+.contributor-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.contributor-status span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.contributor-status-active {
+    background: rgba(16, 185, 129, .1);
+    color: #059669;
+}
+
+.contributor-status-inactive {
+    background: rgba(148, 163, 184, .13);
+    color: #64748b;
+}
+
+.contributor-action-button {
+    width: 36px;
+    height: 36px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--exec-border, #e3eaf1);
+    border-radius: 9px;
+    color: var(--exec-muted, #64748b);
+    background: var(--exec-surface, #fff);
+}
+
+.contributor-action-button:hover {
+    background: rgba(15, 118, 110, .08);
+    color: #0f766e;
+    border-color: rgba(15, 118, 110, .2);
+}
+
+.contributor-action-danger:hover {
+    background: rgba(220, 53, 69, .08);
+    color: #dc3545;
+    border-color: rgba(220, 53, 69, .2);
+}
+
+.contributor-modal {
+    overflow: hidden;
+}
+
+.contributor-modal-header {
+    padding: 22px 24px;
+    background: rgba(15, 118, 110, .035);
+}
+
+.contributor-modal-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(15, 118, 110, .1);
+    color: #0f766e;
+    font-size: 1.25rem;
+}
+
+.contributor-modal-footer {
+    padding: 18px 24px;
+    background: rgba(148, 163, 184, .035);
+}
+
+.contributor-switch-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 17px;
+    border: 1px solid var(--exec-border, #e3eaf1);
+    border-radius: 12px;
+}
+
+.contributor-switch-panel strong {
+    display: block;
+    font-size: .87rem;
+}
+
+.contributor-security-banner {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    padding: 17px;
+    border-radius: 12px;
+    background: rgba(15, 118, 110, .07);
+    color: var(--exec-text, #10243b);
+}
+
+.contributor-security-banner > i {
+    font-size: 1.4rem;
+    color: #0f766e;
+}
+
+.contributor-security-banner strong {
+    display: block;
+    font-size: .88rem;
+    margin-bottom: 5px;
+}
+
+.contributor-security-banner p {
+    font-size: .79rem;
+    line-height: 1.6;
+    color: var(--exec-muted, #64748b);
+}
+
+@media (max-width: 767px) {
+    .contributor-new-button {
+        width: 100%;
+    }
+
+    .contributor-stat {
+        padding: 17px !important;
+    }
+
+    .contributor-table-card {
+        padding: 16px !important;
+    }
+
+    .contributor-modal-header {
+        padding: 18px;
+    }
+}
+
+
+/* SIDEBAR MOBILE */
+
+@media (max-width: 991.98px) {
+
+    body.sidebar-mobile-open {
+        overflow: hidden;
+    }
+
+    .admin-sidebar.show {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+}
+
+/* DATATABLES */
+
+.executive-datatable .dt-search input {
+    border-radius: 10px;
+    border: 1px solid var(--exec-border, #e3eaf1);
+    padding: 9px 12px;
+}
+
+.executive-datatable .dt-length select {
+    border-radius: 9px;
+    border: 1px solid var(--exec-border, #e3eaf1);
+}
+
+.executive-datatable .dt-paging .dt-paging-button {
+    border-radius: 8px !important;
+}
+
+/* ==========================================
+   CFDI MANAGER — EXECUTIVE CFDI MODULE
+========================================== */
+
+.cfdi-stat {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px !important;
+}
+
+.cfdi-stat-icon {
+    display: grid;
+    place-items: center;
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    font-size: 1.5rem;
+}
+
+.cfdi-stat-blue {
+    background: rgba(37,99,235,.1);
+    color: #2563eb;
+}
+
+.cfdi-stat-green {
+    background: rgba(15,118,110,.1);
+    color: #0f766e;
+}
+
+.cfdi-stat-amber {
+    background: rgba(217,119,6,.1);
+    color: #d97706;
+}
+
+.cfdi-panel {
+    padding: 25px !important;
+}
+
+.cfdi-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.cfdi-heading-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(15,118,110,.09);
+    color: #0f766e;
+    font-size: 1.2rem;
+}
+
+.cfdi-download-button {
+    padding: 10px 16px;
+    font-size: .84rem;
+}
+
+.cfdi-selection-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    background: rgba(15,118,110,.065);
+    color: var(--exec-muted, #64748b);
+    font-size: .78rem;
+}
+
+.cfdi-selection-info > i {
+    color: #0f766e;
+    font-size: 1rem;
+}
+
+.cfdi-uuid {
+    display: inline-block;
+    max-width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: monospace;
+    font-size: .77rem;
+    font-weight: 600;
+    color: var(--exec-text, #10243b);
+}
+
+.cfdi-rfc {
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.cfdi-amount {
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.cfdi-type {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: .72rem;
+    font-weight: 700;
+}
+
+.cfdi-type-income {
+    background: rgba(16,185,129,.1);
+    color: #059669;
+}
+
+.cfdi-type-expense {
+    background: rgba(220,53,69,.1);
+    color: #dc3545;
+}
+
+.cfdi-type-payment {
+    background: rgba(37,99,235,.1);
+    color: #2563eb;
+}
+
+.cfdi-type-payroll {
+    background: rgba(124,58,237,.1);
+    color: #7c3aed;
+}
+
+.cfdi-type-other {
+    background: rgba(148,163,184,.12);
+    color: #64748b;
+}
+
+.cfdi-xml-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(15,118,110,.2);
+    border-radius: 9px;
+    background: rgba(15,118,110,.06);
+    color: #0f766e;
+    padding: 7px 12px;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.cfdi-xml-button:hover {
+    background: #0f766e;
+    color: white;
+    border-color: #0f766e;
+}
+
+.cfdi-no-file {
+    color: var(--exec-muted, #64748b);
+    font-size: .76rem;
+    white-space: nowrap;
+}
+
+.cfdi-table thead th {
+    white-space: nowrap;
+}
+
+.cfdi-table tbody td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+@media (max-width: 767px) {
+    .cfdi-panel {
+        padding: 17px !important;
+    }
+
+    .cfdi-stat {
+        padding: 18px !important;
+    }
+
+    .cfdi-download-button {
+        width: 100%;
+    }
+
+    .cfdi-selection-info {
+        flex-wrap: wrap;
+    }
+}
+
+/* ==========================================
+   CFDI MANAGER — EXECUTIVE SAT REQUESTS
+========================================== */
+
+.sat-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px !important;
+    height: 100%;
+}
+
+.sat-stat-icon {
+    display: grid;
+    place-items: center;
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    font-size: 1.45rem;
+}
+
+.sat-stat-blue {
+    background: rgba(37, 99, 235, .1);
+    color: #2563eb;
+}
+
+.sat-stat-amber {
+    background: rgba(217, 119, 6, .1);
+    color: #d97706;
+}
+
+.sat-stat-green {
+    background: rgba(15, 118, 110, .1);
+    color: #0f766e;
+}
+
+.sat-request-panel {
+    padding: 25px !important;
+    height: 100%;
+}
+
+.sat-panel-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.sat-panel-icon {
+    display: grid;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(15, 118, 110, .1);
+    color: #0f766e;
+    font-size: 1.3rem;
+}
+
+.sat-form-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px;
+    border-radius: 10px;
+    background: rgba(15, 118, 110, .065);
+    color: var(--exec-muted, #64748b);
+    font-size: .77rem;
+    line-height: 1.6;
+}
+
+.sat-form-note i {
+    color: #0f766e;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.sat-primary-button {
+    padding: 12px 16px;
+    font-size: .86rem;
+    font-weight: 700;
+}
+
+.sat-record-count {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 9px;
+    background: rgba(15, 118, 110, .08);
+    color: #0f766e;
+    font-size: .76rem;
+    font-weight: 700;
+}
+
+.sat-request-table thead th {
+    white-space: nowrap;
+}
+
+.sat-request-table tbody td {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    vertical-align: middle;
+}
+
+.sat-request-id {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--exec-muted, #64748b);
+}
+
+.sat-request-rfc {
+    font-size: .78rem;
+    white-space: nowrap;
+}
+
+.sat-format-badge {
+    display: inline-block;
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: rgba(37, 99, 235, .08);
+    color: #2563eb;
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+.sat-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sat-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.sat-status-pending {
+    background: rgba(217, 119, 6, .1);
+    color: #d97706;
+}
+
+.sat-status-processing {
+    background: rgba(37, 99, 235, .1);
+    color: #2563eb;
+}
+
+.sat-status-completed {
+    background: rgba(16, 185, 129, .1);
+    color: #059669;
+}
+
+.sat-status-failed {
+    background: rgba(220, 53, 69, .1);
+    color: #dc3545;
+}
+
+.sat-status-neutral {
+    background: rgba(148, 163, 184, .12);
+    color: #64748b;
+}
+
+.sat-operation-modal {
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.sat-operation-modal-header {
+    padding: 22px 24px;
+    background: rgba(15, 118, 110, .035);
+}
+
+@media (max-width: 767px) {
+    .sat-request-panel {
+        padding: 17px !important;
+    }
+
+    .sat-stat-card {
+        padding: 18px !important;
+    }
+
+    .sat-operation-modal-header {
+        padding: 18px;
+    }
+}
+
+/* ==========================================
+   CFDI MANAGER — SAT OPERATIONS CENTER
+========================================== */
+
+.sat-center-primary-button {
+    padding: 11px 18px;
+    font-size: .85rem;
+    font-weight: 700;
+    border-radius: 10px;
+}
+
+/* ESTADÍSTICAS */
+
+.sat-center-stat {
+    padding: 23px !important;
+}
+
+.sat-center-stat-label {
+    display: block;
+    color: var(--bs-secondary-color);
+    font-size: .79rem;
+    font-weight: 600;
+}
+
+.sat-center-stat-number {
+    margin: 16px 0 5px;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -.8px;
+}
+
+.sat-center-stat-description {
+    color: var(--bs-secondary-color);
+    font-size: .73rem;
+}
+
+.sat-center-stat-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.sat-center-stat-blue {
+    background: rgba(37, 99, 235, .1);
+    color: #2563eb;
+}
+
+.sat-center-stat-amber {
+    background: rgba(217, 119, 6, .1);
+    color: #d97706;
+}
+
+.sat-center-stat-purple {
+    background: rgba(124, 58, 237, .1);
+    color: #7c3aed;
+}
+
+.sat-center-stat-green {
+    background: rgba(15, 118, 110, .1);
+    color: #0f766e;
+}
+
+/* INFORMACIÓN */
+
+.sat-center-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 19px 22px;
+    border: 1px solid rgba(15, 118, 110, .13);
+    border-radius: 14px;
+    background: rgba(15, 118, 110, .055);
+}
+
+.sat-center-info-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(15, 118, 110, .12);
+    color: #0f766e;
+    font-size: 1.35rem;
+}
+
+.sat-center-info > div:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+}
+
+.sat-center-info strong {
+    display: block;
+    font-size: .87rem;
+    margin-bottom: 5px;
+}
+
+.sat-center-info p {
+    color: var(--bs-secondary-color);
+    font-size: .77rem;
+    line-height: 1.6;
+}
+
+.sat-center-info-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #0f766e;
+    font-size: .78rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.sat-center-info-link:hover {
+    color: #115e59;
+}
+
+/* PANEL */
+
+.sat-center-panel {
+    padding: 25px !important;
+}
+
+.sat-center-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.sat-center-refresh-button {
+    border-radius: 9px;
+    font-size: .8rem;
+    padding: 9px 13px;
+}
+
+/* TABLA */
+
+.sat-center-table thead th {
+    white-space: nowrap;
+}
+
+.sat-center-table tbody td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    vertical-align: middle;
+}
+
+.sat-center-taxpayer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sat-center-taxpayer-icon {
+    display: grid;
+    place-items: center;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: rgba(15, 118, 110, .08);
+    color: #0f766e;
+}
+
+.sat-center-taxpayer strong {
+    display: block;
+    font-size: .78rem;
+    white-space: nowrap;
+}
+
+.sat-center-taxpayer small {
+    color: var(--bs-secondary-color);
+    font-size: .68rem;
+}
+
+.sat-center-request-id {
+    display: inline-block;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: monospace;
+    font-size: .75rem;
+    font-weight: 600;
+}
+
+.sat-center-pending-id {
+    color: var(--bs-secondary-color);
+    font-size: .76rem;
+    white-space: nowrap;
+}
+
+.sat-center-type {
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sat-center-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sat-center-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.sat-center-status-pending {
+    background: rgba(217, 119, 6, .1);
+    color: #d97706;
+}
+
+.sat-center-status-processing {
+    background: rgba(37, 99, 235, .1);
+    color: #2563eb;
+}
+
+.sat-center-status-completed {
+    background: rgba(16, 185, 129, .1);
+    color: #059669;
+}
+
+.sat-center-status-failed {
+    background: rgba(220, 53, 69, .1);
+    color: #dc3545;
+}
+
+.sat-center-status-neutral {
+    background: rgba(148, 163, 184, .12);
+    color: #64748b;
+}
+
+.sat-center-packages {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: rgba(124, 58, 237, .08);
+    color: #7c3aed;
+    font-size: .76rem;
+    font-weight: 700;
+}
+
+.sat-center-date {
+    font-size: .77rem;
+    white-space: nowrap;
+}
+
+.sat-center-no-review {
+    color: var(--bs-secondary-color);
+    font-size: .76rem;
+    white-space: nowrap;
+}
+
+.sat-center-action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border: 1px solid rgba(15, 118, 110, .2);
+    border-radius: 9px;
+    background: rgba(15, 118, 110, .055);
+    color: #0f766e;
+    font-size: .76rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sat-center-action-button:hover {
+    background: #0f766e;
+    border-color: #0f766e;
+    color: #fff;
+}
+
+/* ESTADO VACÍO */
+
+.sat-center-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sat-center-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 65px;
+    height: 65px;
+    border-radius: 18px;
+    background: rgba(148, 163, 184, .1);
+    color: var(--bs-secondary-color);
+    font-size: 1.9rem;
+}
+
+/* PAGINACIÓN */
+
+.sat-center-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 18px;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.sat-center-pagination .pagination {
+    margin-bottom: 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 767px) {
+
+    .sat-center-primary-button {
+        width: 100%;
+    }
+
+    .sat-center-panel {
+        padding: 17px !important;
+    }
+
+    .sat-center-stat {
+        padding: 18px !important;
+    }
+
+    .sat-center-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sat-center-info-link {
+        margin-top: 4px;
+    }
+
+    .sat-center-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+/* ==========================================
+   CFDI MANAGER — EXECUTIVE PROFILE
+========================================== */
+
+/* IDENTIDAD DEL USUARIO */
+
+.profile-identity-card {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 26px !important;
+}
+
+.profile-identity-avatar {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #0b1628, #0f766e);
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 800;
+    box-shadow: 0 10px 24px rgba(15, 118, 110, .16);
+}
+
+.profile-identity-details {
+    min-width: 0;
+}
+
+.profile-identity-details h4 {
+    overflow-wrap: anywhere;
+}
+
+.profile-account-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 11px;
+    border-radius: 8px;
+    background: rgba(15, 118, 110, .09);
+    color: #0f766e;
+    font-size: .74rem;
+    font-weight: 700;
+}
+
+/* TARJETAS */
+
+.profile-settings-card,
+.profile-danger-card {
+    padding: 26px !important;
+}
+
+.profile-section-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.profile-section-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    font-size: 1.35rem;
+}
+
+.profile-icon-blue {
+    background: rgba(37, 99, 235, .1);
+    color: #2563eb;
+}
+
+.profile-icon-green {
+    background: rgba(15, 118, 110, .1);
+    color: #0f766e;
+}
+
+.profile-icon-red {
+    background: rgba(220, 53, 69, .09);
+    color: #dc3545;
+}
+
+.profile-section-body {
+    padding-top: 24px;
+}
+
+/* COMPATIBILIDAD CON BREEZE */
+
+.executive-profile .profile-section-body form {
+    width: 100%;
+}
+
+.executive-profile .profile-section-body input:not([type="checkbox"]) {
+    max-width: 100%;
+}
+
+.executive-profile .profile-section-body button {
+    transition: all .2s ease;
+}
+
+.executive-profile .profile-section-body button:hover {
+    transform: translateY(-1px);
+}
+
+/* ZONA PELIGROSA */
+
+.profile-danger-card {
+    border: 1px solid rgba(220, 53, 69, .18);
+}
+
+.profile-danger-card .profile-section-heading {
+    border-bottom-color: rgba(220, 53, 69, .13);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 767px) {
+
+    .profile-identity-card {
+        padding: 20px !important;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .profile-identity-avatar {
+        width: 58px;
+        height: 58px;
+        border-radius: 15px;
+        font-size: 1.5rem;
+    }
+
+    .profile-settings-card,
+    .profile-danger-card {
+        padding: 18px !important;
+    }
+
+    .profile-section-heading {
+        gap: 12px;
+    }
+
+    .profile-section-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+}
+
+
+/* ==========================================
+   CFDI MANAGER — DELETE ACCOUNT
+========================================== */
+
+.executive-delete-account {
+    width: 100%;
+}
+
+.delete-account-trigger {
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: .84rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.delete-account-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 16px 18px;
+    border: 1px solid rgba(220, 53, 69, .14);
+    border-radius: 12px;
+    background: rgba(220, 53, 69, .045);
+}
+
+.delete-account-warning > i {
+    color: #dc3545;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.delete-account-warning strong {
+    display: block;
+    color: #dc3545;
+    font-size: .83rem;
+    margin-bottom: 5px;
+}
+
+.delete-account-warning p {
+    color: var(--bs-secondary-color);
+    font-size: .77rem;
+    line-height: 1.6;
+}
+
+/* MODAL */
+
+.executive-delete-modal {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--bs-border-color);
+}
+
+.executive-delete-modal .modal-header {
+    padding: 20px 24px;
+    background: rgba(220, 53, 69, .035);
+}
+
+.delete-modal-icon {
+    display: grid;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(220, 53, 69, .1);
+    color: #dc3545;
+    font-size: 1.3rem;
+}
+
+.executive-delete-modal .modal-footer {
+    padding: 16px 24px;
+}
+
+@media (max-width: 767px) {
+
+    .delete-account-trigger {
+        width: 100%;
+    }
+
+    .delete-account-warning {
+        padding: 14px;
+    }
+
+    .executive-delete-modal .modal-header {
+        padding: 16px;
+    }
+
+}
+
+
+/* ==========================================
+   CFDI MANAGER — PROFILE PASSWORD
+========================================== */
+
+.executive-password-section {
+    width: 100%;
+}
+
+.executive-password-section .form-label {
+    font-size: .82rem;
+}
+
+.executive-password-section .input-group-text {
+    background: var(--bs-tertiary-bg);
+    color: var(--bs-secondary-color);
+    border-color: var(--bs-border-color);
+}
+
+.executive-password-section .toggle-profile-password {
+    min-width: 44px;
+    border-color: var(--bs-border-color);
+}
+
+.password-strength-panel {
+    padding: 14px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 11px;
+    background: var(--bs-tertiary-bg);
+}
+
+.password-strength-progress {
+    height: 7px;
+    border-radius: 20px;
+}
+
+.password-strength-progress .progress-bar {
+    border-radius: 20px;
+    transition: width .2s ease;
+}
+
+.profile-password-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 10px;
+    background: rgba(15, 118, 110, .07);
+    color: var(--bs-secondary-color);
+    font-size: .77rem;
+    line-height: 1.6;
+}
+
+.profile-password-tip i {
+    color: #0f766e;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.profile-password-save {
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-size: .84rem;
+    font-weight: 700;
+}
+
+@media (max-width: 767px) {
+
+    .profile-password-save {
+        width: 100%;
+    }
+
+}
+
+
+/* ==========================================
+   CFDI MANAGER — PROFILE INFORMATION
+========================================== */
+
+.executive-profile-information {
+    width: 100%;
+}
+
+.executive-profile-information .form-label {
+    font-size: .82rem;
+}
+
+.executive-profile-information .input-group-text {
+    background: var(--bs-tertiary-bg);
+    color: var(--bs-secondary-color);
+    border-color: var(--bs-border-color);
+    min-width: 43px;
+    justify-content: center;
+}
+
+.executive-profile-information .form-control {
+    min-height: 43px;
+}
+
+/* CORREO VERIFICADO */
+
+.profile-email-verified {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 11px;
+    border: 1px solid rgba(16, 185, 129, .15);
+    background: rgba(16, 185, 129, .07);
+}
+
+.profile-email-verified > i {
+    color: #059669;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.profile-email-verified strong {
+    display: block;
+    color: #059669;
+    font-size: .82rem;
+    margin-bottom: 4px;
+}
+
+.profile-email-verified p {
+    color: var(--bs-secondary-color);
+    font-size: .76rem;
+    line-height: 1.5;
+}
+
+/* CORREO SIN VERIFICAR */
+
+.profile-email-unverified {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 11px;
+    border: 1px solid rgba(217, 119, 6, .16);
+    background: rgba(217, 119, 6, .065);
+}
+
+.profile-email-unverified > i {
+    color: #d97706;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.profile-email-unverified strong {
+    display: block;
+    color: #d97706;
+    font-size: .82rem;
+    margin-bottom: 4px;
+}
+
+.profile-email-unverified p {
+    color: var(--bs-secondary-color);
+    font-size: .76rem;
+    line-height: 1.6;
+}
+
+/* GUARDAR */
+
+.profile-save-button {
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-size: .84rem;
+    font-weight: 700;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 767px) {
+
+    .profile-save-button {
+        width: 100%;
+    }
+
+    .profile-email-verified,
+    .profile-email-unverified {
+        padding: 13px;
+    }
+
+}
